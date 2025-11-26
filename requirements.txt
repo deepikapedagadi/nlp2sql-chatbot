@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 flask
 flask-cors
 langchain
@@ -9,3 +10,15 @@ psycopg2
 python-dotenv
 psycopg2-binary
 gunicorn
+=======
+flask
+flask-cors
+langchain
+langchain-openai
+langchain-community
+langsmith
+sqlalchemy
+psycopg2
+python-dotenv
+psycopg2-binary
+>>>>>>> ffb1f70f3d581cf6ae43f7173bd101a3c9d78f88
