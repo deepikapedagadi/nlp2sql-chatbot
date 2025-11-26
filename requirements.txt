@@ -1,0 +1,10 @@
+flask
+flask-cors
+langchain
+langchain-openai
+langchain-community
+langsmith
+sqlalchemy
+psycopg2
+python-dotenv
+psycopg2-binary
