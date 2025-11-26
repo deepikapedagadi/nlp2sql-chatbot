@@ -27,6 +27,11 @@ pg_uri = os.getenv("POSTGRES_URI",
                    "postgresql+psycopg2://postgres:welcome@localhost:5432/testdb"
                    )
 
+#pg_uri = os.getenv("DATABASE_URL")
+
+db_uri = os.getenv("DATABASE_URL")
+db1 = SQLDatabase.from_uri(db_uri)
+
 #create db obj
 db = SQLDatabase.from_uri(pg_uri) # type: ignore
 
