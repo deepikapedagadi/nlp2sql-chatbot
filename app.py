@@ -23,17 +23,31 @@ LANGCHAIN_TRACING_V2 = True
 #db = SQLDatabase.from_uri(pg_uri) # type: ignore
 
 #connect to PostgreSQL
-pg_uri = os.getenv("POSTGRES_URI",
+"""pg_uri = os.getenv("POSTGRES_URI",
                    "postgresql+psycopg2://postgres:welcome@localhost:5432/testdb"
-                   )
+                   )"""
 
 #pg_uri = os.getenv("DATABASE_URL")
 
-db_uri = os.getenv("DATABASE_URL")
-db1 = SQLDatabase.from_uri(db_uri)
+#db_uri = os.getenv("DATABASE_URL")
+#db1 = SQLDatabase.from_uri(db_uri)
 
 #create db obj
-db = SQLDatabase.from_uri(pg_uri) # type: ignore
+#db = SQLDatabase.from_uri(pg_uri) # type: ignore
+
+# Connect to Render PostgreSQL -----------
+
+db_uri = os.getenv("DATABASE_URL")  # MUST be set in Render dashboard
+
+if not db_uri:
+    raise Exception("DATABASE_URL is missing! Add it in Render → Environment Variables.")
+
+# Force SSL for Render Postgres
+if "sslmode" not in db_uri:
+    db_uri += "?sslmode=require"
+
+db = SQLDatabase.from_uri(db_uri)
+
 
 #load llm n sql agent
 llm = ChatOpenAI(
