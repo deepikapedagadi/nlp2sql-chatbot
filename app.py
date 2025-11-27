@@ -2,8 +2,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from langchain_community.utilities import SQLDatabase
 import os
+from langchain_groq import ChatGroq
 from langchain_community.agent_toolkits.sql.base import create_sql_agent
-from langchain_openai import ChatOpenAI
+#from langchain_openai import ChatOpenAI
 #from langchain.agents import AgentType
 from langsmith import traceable
 
@@ -15,12 +16,16 @@ app = Flask(__name__)
 CORS(app) #allows frontend to call backend
 
 #env  var
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+#OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 LANGCHAIN_API_KEY =  os.getenv("LANGSMITH_API_KEY")
 LANGCHAIN_PROJECT = "nlp2-sql-chatbot"
 LANGCHAIN_TRACING_V2 = True
 #create db obj
 #db = SQLDatabase.from_uri(pg_uri) # type: ignore
+
+if not GROQ_API_KEY:
+    raise Exception("GROQ_API_KEY is missing!")
 
 #connect to PostgreSQL
 """pg_uri = os.getenv("POSTGRES_URI",
@@ -50,10 +55,14 @@ db = SQLDatabase.from_uri(db_uri)
 
 
 #load llm n sql agent
-llm = ChatOpenAI(
-    model = "gpt-4o-mini",
-    temperature = 0,
+#from langchain_groq import ChatGroq
+
+llm = ChatGroq(
+    groq_api_key="YOUR_GROQ_API_KEY",
+    model_name="llama3-70b-8192"
 )
+
+#llm.invoke("Hello, who are you?")
 
 sql_agent = create_sql_agent(
     llm=llm,
@@ -80,7 +89,8 @@ def ask():
 
         return jsonify({
             "question": question,
-            "answer": answer
+            "answer": answer,
+            "sql": answer
         })
     
     except Exception as e:
